@@ -27,7 +27,7 @@ const App = () => {
 
       return {
         from: {
-          opacity: 0,
+          opacity: 0.5,
           transform: `translate(${startLeft}px, ${startPosition}px)`,
         },
         to: {
@@ -49,7 +49,7 @@ const App = () => {
   return (
     <div className="container">
       <button onClick={handleButtonClick} className="button">
-        Нажми на меня и узнаешь какая ты 
+        Нажми на меня и узнаешь какая ты
       </button>
       {showWords && (
         <div className="word-container">
