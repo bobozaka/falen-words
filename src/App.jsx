@@ -11,7 +11,7 @@ const App = () => {
   const [showWords, setShowWords] = useState(false);
 
   const handleButtonClick = () => {
-    setShowWords(true);
+    setShowWords(!showWords);
   };
 
   const wordAnimations = useSprings(
@@ -35,7 +35,12 @@ const App = () => {
         delay,
         config: { tension: 3, friction: 40 },
         onRest: () => {
-          if (index === words.length - 1) {
+          // Удаляем слово из списка слов при попадании вниз
+          if (
+            index === words.length - 1 &&
+            wordAnimations[index].to.transform.startsWith(`translate(0px, ${endPosition}px)`)
+          ) {
+            words.splice(0);
             setShowWords(false);
           }
         },
@@ -49,18 +54,12 @@ const App = () => {
         Нажми меня
       </button>
       {showWords && (
-        <div className="word-container">
+        <div className="word-container" key={showWords}>
           {wordAnimations.map((wordAnimation, index) => (
             <animated.div
               className="animated-word"
               key={words[index]}
-              style={{
-                ...wordAnimation,
-                position: 'absolute',
-                left: '0',
-                right: '0',
-                margin: 'auto',
-              }}
+              style={wordAnimation}
               onAnimationEnd={() => {
                 // Удаляем слово из списка слов при попадании вниз
                 if (wordAnimation.to.transform.startsWith(`translate(0px, ${endPosition}px)`)) {
