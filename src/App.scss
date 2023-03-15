@@ -1,32 +1,61 @@
+$word-height: 3rem;
+$word-color: #131212;
+$word-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  width: 100vw;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 .button {
-  background-color: #333;
-  color: #fff;
-  font-size: 2rem;
   padding: 1rem 2rem;
+  font-size: 1.5rem;
+  border-radius: 5rem;
+  background-color: #000000;
+  color: #ffffff;
   border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
   margin-bottom: 2rem;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
 }
 
 .word-container {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
 .animated-word {
+  position: absolute;
   font-size: 2rem;
-  color: #333;
+  font-weight: bold;
+  text-shadow: $word-shadow;
+  color: $word-color;
   white-space: nowrap;
+}
+
+@media screen and (max-width: 768px) {
+  $word-height: 2rem;
+  .animated-word {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  $word-height: 1.5rem;
+  .animated-word {
+    font-size: 1rem;
+  }
 }

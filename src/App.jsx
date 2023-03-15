@@ -9,14 +9,16 @@ const getRandomNumber = (min, max) => {
 
 const App = () => {
   const [showWords, setShowWords] = useState(false);
+  const [wordList, setWordList] = useState([]);
 
   const handleButtonClick = () => {
-    setShowWords(!showWords);
+    setShowWords(true);
+    setWordList([...wordList, ...words]);
   };
 
   const wordAnimations = useSprings(
-    words.length,
-    words.map((word, index) => {
+    wordList.length,
+    wordList.map((word, index) => {
       const startPosition = getRandomNumber(-500, -100);
       const endPosition = window.innerHeight + 100;
       const startLeft = getRandomNumber(0, window.innerWidth - 100);
@@ -33,15 +35,11 @@ const App = () => {
           transform: `translate(${endLeft}px, ${endPosition}px)`,
         },
         delay,
-        config: { tension: 3, friction: 40 },
+        config: { mass: 1, tension: 2, friction: 40 },
         onRest: () => {
           // Удаляем слово из списка слов при попадании вниз
-          if (
-            index === words.length - 1 &&
-            wordAnimations[index].to.transform.startsWith(`translate(0px, ${endPosition}px)`)
-          ) {
-            words.splice(0);
-            setShowWords(false);
+          if (wordList.includes(word)) {
+            setWordList(wordList.filter((w) => w !== word));
           }
         },
       };
@@ -51,22 +49,22 @@ const App = () => {
   return (
     <div className="container">
       <button onClick={handleButtonClick} className="button">
-        Нажми меня
+        Нажми на меня и узнаешь какая ты 
       </button>
       {showWords && (
-        <div className="word-container" key={showWords}>
+        <div className="word-container">
           {wordAnimations.map((wordAnimation, index) => (
             <animated.div
               className="animated-word"
-              key={words[index]}
+              key={wordList[index]}
               style={wordAnimation}
               onAnimationEnd={() => {
                 // Удаляем слово из списка слов при попадании вниз
-                if (wordAnimation.to.transform.startsWith(`translate(0px, ${endPosition}px)`)) {
-                  words.splice(index, 1);
+                if (wordList.includes(wordList[index])) {
+                  setWordList(wordList.filter((w) => w !== wordList[index]));
                 }
               }}>
-              {words[index]}
+              {wordList[index]}
             </animated.div>
           ))}
         </div>
